@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NetApiFlow: Complex integrations. Linear flows.</title>
+<meta name="description" content="Open source library for ASP.NET Core that shows, live, the path of every HTTP request inside your API, from endpoint to SQL command, with duration, failures, slow steps, and what never ran.">
+<link rel="icon" type="image/svg+xml" href="../assets/logo-mark-dark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+
+<div class="wrap">
+  <nav>
+    <div class="brand">
+      <img src="../assets/logo-mark-dark.svg" alt="NetApiFlow">
+      <span>NETAPI<span class="accent">FLOW</span></span>
+    </div>
+    <div class="nav-links">
+      <a href="https://github.com/Douglasproglima/netapiflow">GitHub</a>
+      <a href="https://github.com/Douglasproglima/netapiflow#readme">Docs</a>
+      <a href="https://www.nuget.org/packages/NetApiFlow">NuGet</a>
+      <span class="lang-switch">
+        <a href="../">PT</a>
+        <a class="active" href="./">EN</a>
+      </span>
+    </div>
+  </nav>
+</div>
+
+<header class="hero">
+  <div class="wrap hero-inner">
+    <img class="mark" src="../assets/logo-mark-dark.svg" alt="">
+    <p class="eyebrow">Live request flow visualizer · ASP.NET Core</p>
+    <h1>NETAPI<span class="accent">FLOW</span></h1>
+    <p class="tagline">Complex integrations. Linear flows.</p>
+    <p class="lead">
+      Open source library for ASP.NET Core that shows, live, the path of every HTTP request
+      inside your API, from endpoint to SQL command, with duration, failures, slow steps,
+      and what never ran.
+    </p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://github.com/Douglasproglima/netapiflow">View on GitHub</a>
+      <a class="btn btn-secondary" href="#quick-start">Quick start</a>
+    </div>
+
+    <div class="card trace-card">
+      <div class="trace-head">
+        <span class="mono route"><span class="method">POST</span> /api/v1/tickets &middot; trace 7f3a&hellip;c21</span>
+        <span class="total">Total 1,284 ms</span>
+      </div>
+      <div class="trace-row">
+        <span class="node">TicketsEndpoint <span class="dur">3 ms</span></span>
+        <span class="conn ok"></span>
+        <span class="node">CreateTicketHandler <span class="dur">12 ms</span></span>
+        <span class="conn ok"></span>
+        <span class="node state-slow">PricingService <span class="dur">842 ms &middot; slow</span></span>
+        <span class="conn warn"></span>
+        <span class="node state-error">TicketRepository <span class="dur">error &middot; 427 ms</span></span>
+        <span class="conn"></span>
+        <span class="node state-skip mono">INSERT INTO tickets <span class="dur">not executed</span></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Engineering manifesto</p>
+    <h2 class="h2">Four principles that do not bend</h2>
+    <div class="grid" style="gap: 0;">
+      <div class="principle">
+        <p class="num">01</p>
+        <h3>Strongly Typed (.NET)</h3>
+        <p>Native DI and ASP.NET Core middleware integration. Typed tracking events, no magic strings or reflection on the critical path.</p>
+      </div>
+      <div class="principle">
+        <p class="num">02</p>
+        <h3>Active Diagnosis</h3>
+        <p>Shows where the failure began, what got slow, and what never executed. State is always color plus icon plus text, never just color.</p>
+      </div>
+      <div class="principle">
+        <p class="num">03</p>
+        <h3>Fluent Configuration</h3>
+        <p>One NuGet package, a couple of lines of code, one local URL. Filters by layer, route and tenant composed in a fluent API.</p>
+      </div>
+      <div class="principle">
+        <p class="num">04</p>
+        <h3>Zero Overhead</h3>
+        <p>Asynchronous collection, toggleable per environment. The request never waits on the dashboard to respond.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">What it does</p>
+    <h2 class="h2">Three pillars</h2>
+    <div class="grid">
+      <div class="card pillar">
+        <span class="tag" style="color: var(--naf-flow-400); border-color: rgba(139,92,246,.45)">Live</span>
+        <h3>Live Tracking</h3>
+        <p>Real time graph of the request path. Endpoint, then Handler, then Services, then Repositories, then SQL. Works with Clean Architecture, Vertical Slices and MediatR.</p>
+      </div>
+      <div class="card pillar">
+        <span class="tag" style="color: var(--naf-warning); border-color: rgba(245,158,11,.45)">Diagnose</span>
+        <h3>Failure &amp; Latency Diagnosis</h3>
+        <p>Duration per step, exception origin, slow steps above threshold, and what never executed, without opening a debugger or mining logs.</p>
+      </div>
+      <div class="card pillar">
+        <span class="tag" style="color: var(--naf-success); border-color: rgba(16,185,129,.45)">Replay</span>
+        <h3>Telemetry &amp; Replay</h3>
+        <p>Execution history with trace ID, filter by tenant and route, and a replay timeline with speed control to see exactly what happened.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="quick-start">
+  <div class="wrap">
+    <p class="eyebrow">Get started</p>
+    <h2 class="h2">Install one package, add a few lines</h2>
+    <p class="section-lead">No separate service to deploy. The dashboard ships embedded in the package and runs next to your API.</p>
+    <div class="card codeblock" style="margin-top: 32px;">
+      <div class="filename"><span>Program.cs</span><span>illustrative example</span></div>
+      <pre><span class="c-cmt">// 1. install the package</span>
+<span class="c-kw">dotnet</span> add package NetApiFlow
+
+<span class="c-cmt">// 2. register and mount the dashboard</span>
+builder.Services.<span class="c-fn">AddNetApiFlow</span>();
+builder.Services.<span class="c-fn">AddNetApiFlowDashboard</span>();
+<span class="c-cmt">// ...</span>
+app.<span class="c-fn">UseNetApiFlowDashboard</span>(<span class="c-str">"/flow"</span>);</pre>
+    </div>
+
+    <h2 class="h2" style="margin-top: 56px;">Every step, color plus icon plus text</h2>
+    <p class="section-lead">State is never color alone. It stays readable in grayscale, for color blind users, and on a black and white printout.</p>
+    <div class="states-grid">
+      <span class="state-chip"><img src="../assets/node-states/waiting.svg" alt="">Waiting</span>
+      <span class="state-chip"><img src="../assets/node-states/running.svg" alt="">Running</span>
+      <span class="state-chip"><img src="../assets/node-states/completed.svg" alt="">Completed</span>
+      <span class="state-chip"><img src="../assets/node-states/slow.svg" alt="">Slow</span>
+      <span class="state-chip"><img src="../assets/node-states/error.svg" alt="">Error</span>
+      <span class="state-chip"><img src="../assets/node-states/skipped.svg" alt="">Not executed</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">
+      <img src="../assets/logo-mark-dark.svg" alt="NetApiFlow">
+      <span class="disp" style="font-weight: 800; letter-spacing: .08em;">NETAPI<span class="accent">FLOW</span></span>
+      <span class="tagline-small">Complex integrations. Linear flows.</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/Douglasproglima/netapiflow">GitHub</a>
+      <a href="https://github.com/Douglasproglima/netapiflow/blob/main/LICENSE">MIT License</a>
+      <a href="https://github.com/joshuamaia/apiflow">Inspired by apiflow</a>
+      <span>&copy; 2026 Douglas Lima</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
