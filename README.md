@@ -1,20 +1,38 @@
-# NetApiFlow Site
+<div align="center">
+  <img src="assets/logo-mark-dark.svg" width="96" height="96" alt="NetApiFlow" />
 
-Landing page do [NetApiFlow](https://github.com/Douglasproglima/netapiflow), publicada via
-GitHub Pages.
+  <h1>NetApiFlow Site</h1>
 
-## 🔗 Acesse
+  <p><strong>Integrações complexas. Fluxos lineares.</strong></p>
 
-| Idioma | URL |
-|---|---|
-| 🇧🇷 Português (padrão) | **https://douglasproglima.github.io/netapiflow-site/** |
-| 🇺🇸 English | **https://douglasproglima.github.io/netapiflow-site/en/** |
+  <p>
+    <a href="https://douglasproglima.github.io/netapiflow-site/">
+      <img src="https://img.shields.io/badge/PT--BR-ACESSAR_SITE-8B5CF6?style=for-the-badge" alt="Acessar site em português" />
+    </a>
+    &nbsp;
+    <a href="https://douglasproglima.github.io/netapiflow-site/en/">
+      <img src="https://img.shields.io/badge/EN-VISIT_SITE-7C3AED?style=for-the-badge" alt="Visit the site in English" />
+    </a>
+  </p>
+
+  <p>
+    <img src="https://img.shields.io/github/deployments/Douglasproglima/netapiflow-site/github-pages?label=github%20pages&style=flat-square&color=10B981" alt="GitHub Pages deployment" />
+    <img src="https://img.shields.io/badge/license-MIT-64748B?style=flat-square" alt="License MIT" />
+    <img src="https://img.shields.io/badge/stack-HTML%20%2B%20CSS-F59E0B?style=flat-square" alt="Stack: HTML + CSS" />
+  </p>
+</div>
+
+<br>
 
 ## Sobre
 
-Site estático, HTML e CSS puro, sem build e sem dependência. Reaproveita a identidade visual do
-[Guia de Marca do NetApiFlow](https://github.com/Douglasproglima/netapiflow/tree/develop/docs/brand)
-(monograma, paleta de cores, tipografia, ícones de estado).
+Landing page do [NetApiFlow](https://github.com/Douglasproglima/netapiflow), publicada via
+GitHub Pages. Site estático, HTML e CSS puro, sem build e sem dependência. Reaproveita a
+identidade visual do
+[Guia de Marca do NetApiFlow](https://github.com/Douglasproglima/netapiflow/tree/develop/docs/brand):
+monograma, paleta de cores, tipografia e ícones de estado.
+
+## Estrutura
 
 ```
 .
@@ -28,7 +46,7 @@ Site estático, HTML e CSS puro, sem build e sem dependência. Reaproveita a ide
     └── node-states/
 ```
 
-## Desenvolvimento local
+## Rodar localmente
 
 Sem build step. Basta abrir `index.html` direto no navegador, ou servir a pasta com qualquer
 servidor estático:
