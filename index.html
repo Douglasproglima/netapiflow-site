@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NetApiFlow — Complex integrations. Linear flows.</title>
+<meta name="description" content="Open source library for ASP.NET Core that shows, live, the path of every HTTP request inside your API: from endpoint to SQL command, with duration, failures, slow steps and what never ran.">
+<link rel="icon" type="image/svg+xml" href="assets/logo-mark-dark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --naf-bg: #090B10;
+    --naf-surface: #131722;
+    --naf-border: #232B3E;
+    --naf-flow-600: #7C3AED;
+    --naf-flow-500: #8B5CF6;
+    --naf-flow-400: #A78BFA;
+    --naf-success: #10B981;
+    --naf-warning: #F59E0B;
+    --naf-danger: #EF4444;
+    --naf-idle: #64748B;
+    --naf-text: #F8FAFC;
+    --naf-text-muted: #94A3B8;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--naf-bg);
+    color: var(--naf-text);
+    font-family: Inter, system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--naf-flow-400); }
+  a:hover { color: var(--naf-flow-500); }
+
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+  .disp { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  .eyebrow {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 12px; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--naf-flow-400); margin: 0;
+  }
+
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 0; gap: 16px; flex-wrap: wrap;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand img { width: 28px; height: 28px; }
+  .brand span { font-weight: 800; letter-spacing: .08em; font-size: 14px; }
+  .brand .accent { color: var(--naf-flow-400); }
+  .nav-links { display: flex; gap: 20px; font-size: 14px; }
+  .nav-links a { color: var(--naf-text-muted); text-decoration: none; }
+  .nav-links a:hover { color: var(--naf-text); }
+
+  header.hero {
+    background-image: radial-gradient(rgba(148, 163, 184, .12) 1px, transparent 1px);
+    background-size: 22px 22px;
+    padding: 72px 0 96px;
+    border-top: 1px solid var(--naf-border);
+    border-bottom: 1px solid var(--naf-border);
+  }
+  .hero-inner { display: flex; flex-direction: column; gap: 24px; }
+  .hero img.mark { width: 96px; height: 96px; }
+  h1 {
+    margin: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-weight: 800; font-size: clamp(40px, 8vw, 80px);
+    letter-spacing: .02em; line-height: .98;
+  }
+  .tagline {
+    margin: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-weight: 600; font-size: clamp(20px, 3vw, 28px); color: var(--naf-flow-400);
+  }
+  .lead { margin: 0; color: var(--naf-text-muted); font-size: 17px; max-width: 640px; }
+
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font: 600 14px Inter, sans-serif; border-radius: 12px; padding: 0 20px; height: 44px;
+    text-decoration: none; cursor: pointer; border: 1px solid transparent;
+  }
+  .btn-primary { background: var(--naf-flow-600); color: #fff; }
+  .btn-primary:hover { background: var(--naf-flow-500); }
+  .btn-secondary { background: transparent; color: var(--naf-text); border-color: var(--naf-border); }
+  .btn-secondary:hover { border-color: var(--naf-flow-400); color: var(--naf-flow-400); }
+
+  .card {
+    background: rgba(19, 23, 34, .72);
+    border: 1px solid var(--naf-border);
+    border-radius: 18px;
+    padding: 24px;
+    backdrop-filter: blur(12px);
+  }
+
+  .trace-card { margin-top: 16px; width: 100%; }
+  .trace-head {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 12px; flex-wrap: wrap; margin-bottom: 16px;
+  }
+  .trace-head .route { font-size: 13px; color: var(--naf-text-muted); }
+  .trace-head .method { color: var(--naf-success); font-weight: 600; }
+  .trace-head .total {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--naf-warning);
+    border: 1px solid rgba(245, 158, 11, .4); border-radius: 999px; padding: 4px 10px;
+  }
+  .trace-row { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 0; }
+  .node {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 9px 13px; border-radius: 12px; background: var(--naf-surface);
+    border: 1px solid var(--naf-border); white-space: nowrap; font-size: 14px;
+  }
+  .node .dur { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--naf-text-muted); }
+  .node.state-slow { border-color: rgba(245, 158, 11, .5); }
+  .node.state-error { border-color: rgba(239, 68, 68, .55); }
+  .node.state-skip { border-style: dashed; color: var(--naf-text-muted); }
+  .conn { width: 26px; height: 2px; background: var(--naf-border); flex: none; }
+  .conn.ok { background: var(--naf-success); }
+  .conn.warn { background: var(--naf-warning); }
+
+  section { padding: 72px 0; border-top: 1px solid var(--naf-border); }
+  .h2 {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 700;
+    font-size: clamp(26px, 4vw, 36px); letter-spacing: -.02em; margin: 10px 0 12px;
+  }
+  .section-lead { color: var(--naf-text-muted); font-size: 16px; max-width: 640px; margin: 0; }
+
+  .grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); margin-top: 36px; }
+
+  .principle { padding: 20px 20px 20px 0; border-top: 1px solid var(--naf-border); }
+  .principle .num { font-family: 'JetBrains Mono', monospace; color: var(--naf-flow-400); font-size: 13px; margin: 0 0 8px; }
+  .principle h3 { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 18px; margin: 0 0 8px; }
+  .principle p { font-size: 14px; color: var(--naf-text-muted); margin: 0; line-height: 1.6; }
+
+  .pillar { display: flex; flex-direction: column; gap: 14px; }
+  .pillar .tag {
+    align-self: flex-start; font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .1em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px;
+    border: 1px solid var(--naf-border); color: var(--naf-text-muted);
+  }
+  .pillar h3 { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 20px; margin: 0; }
+  .pillar p { font-size: 14px; color: var(--naf-text-muted); line-height: 1.65; margin: 0; }
+
+  .codeblock {
+    padding: 0; overflow: hidden;
+  }
+  .codeblock .filename {
+    display: flex; justify-content: space-between; padding: 12px 18px;
+    border-bottom: 1px solid var(--naf-border); font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--naf-text-muted);
+  }
+  pre {
+    margin: 0; padding: 20px; font-family: 'JetBrains Mono', monospace; font-size: 13.5px;
+    line-height: 1.8; overflow-x: auto; color: #CBD5E1;
+  }
+  .c-cmt { color: var(--naf-idle); }
+  .c-kw { color: var(--naf-flow-400); }
+  .c-fn { color: var(--naf-success); }
+  .c-str { color: var(--naf-warning); }
+
+  .states-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
+    gap: 12px; margin-top: 32px;
+  }
+  .state-chip {
+    display: inline-flex; align-items: center; gap: 10px; padding: 10px 14px;
+    border-radius: 12px; background: var(--naf-surface); border: 1px solid var(--naf-border);
+    font-size: 14px; font-weight: 500;
+  }
+  .state-chip img { width: 18px; height: 18px; }
+
+  footer { border-top: 1px solid var(--naf-border); background: #0C0F16; padding: 48px 0; }
+  .footer-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+  .footer-brand img { width: 28px; height: 28px; }
+  .footer-brand span.tagline-small { color: var(--naf-text-muted); font-size: 13px; margin-left: 8px; }
+  .footer-links { display: flex; gap: 20px; flex-wrap: wrap; font-size: 14px; color: var(--naf-text-muted); }
+  .footer-links a { color: var(--naf-text-muted); }
+  .footer-links a:hover { color: var(--naf-flow-400); }
+
+  @media (prefers-color-scheme: light) {
+    body { background: #F8FAFC; color: #0F172A; }
+    .lead, .section-lead, .principle p, .pillar p, .node .dur, .nav-links a, .footer-links,
+    .footer-links a, .footer-brand span.tagline-small { color: #475569; }
+    .card { background: rgba(255, 255, 255, .8); border-color: #E2E8F0; }
+    .node { background: #F1F5F9; border-color: #E2E8F0; }
+    header.hero, section, footer { border-color: #E2E8F0; }
+    footer { background: #F1F5F9; }
+    .btn-secondary { border-color: #CBD5E1; color: #0F172A; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <nav>
+    <div class="brand">
+      <img src="assets/logo-mark-dark.svg" alt="NetApiFlow">
+      <span>NETAPI<span class="accent">FLOW</span></span>
+    </div>
+    <div class="nav-links">
+      <a href="https://github.com/Douglasproglima/netapiflow">GitHub</a>
+      <a href="https://github.com/Douglasproglima/netapiflow#readme">Docs</a>
+      <a href="https://www.nuget.org/packages/NetApiFlow">NuGet</a>
+    </div>
+  </nav>
+</div>
+
+<header class="hero">
+  <div class="wrap hero-inner">
+    <img class="mark" src="assets/logo-mark-dark.svg" alt="">
+    <p class="eyebrow">Live request flow visualizer · ASP.NET Core</p>
+    <h1>NETAPI<span class="accent">FLOW</span></h1>
+    <p class="tagline">Complex integrations. Linear flows.</p>
+    <p class="lead">
+      Open source library for ASP.NET Core that shows, live, the path of every HTTP request
+      inside your API — from endpoint to SQL command — with duration, failures, slow steps,
+      and what never ran.
+    </p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://github.com/Douglasproglima/netapiflow">View on GitHub</a>
+      <a class="btn btn-secondary" href="#quick-start">Quick start</a>
+    </div>
+
+    <div class="card trace-card">
+      <div class="trace-head">
+        <span class="mono route"><span class="method">POST</span> /api/v1/tickets &middot; trace 7f3a&hellip;c21</span>
+        <span class="total">Total 1,284 ms</span>
+      </div>
+      <div class="trace-row">
+        <span class="node">TicketsEndpoint <span class="dur">3 ms</span></span>
+        <span class="conn ok"></span>
+        <span class="node">CreateTicketHandler <span class="dur">12 ms</span></span>
+        <span class="conn ok"></span>
+        <span class="node state-slow">PricingService <span class="dur">842 ms &middot; slow</span></span>
+        <span class="conn warn"></span>
+        <span class="node state-error">TicketRepository <span class="dur">error &middot; 427 ms</span></span>
+        <span class="conn"></span>
+        <span class="node state-skip mono">INSERT INTO tickets <span class="dur">not executed</span></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Engineering manifesto</p>
+    <h2 class="h2">Four non-negotiable principles</h2>
+    <div class="grid" style="gap: 0;">
+      <div class="principle">
+        <p class="num">01</p>
+        <h3>Strongly Typed (.NET)</h3>
+        <p>Native DI and ASP.NET Core middleware integration. Typed tracking events, no magic strings or reflection on the critical path.</p>
+      </div>
+      <div class="principle">
+        <p class="num">02</p>
+        <h3>Active Diagnosis</h3>
+        <p>Shows where the failure began, what got slow, and what never executed. State is always color + icon + text. Never just color.</p>
+      </div>
+      <div class="principle">
+        <p class="num">03</p>
+        <h3>Fluent Configuration</h3>
+        <p>One NuGet package, a couple of lines of code, one local URL. Filters by layer, route and tenant composed in a fluent API.</p>
+      </div>
+      <div class="principle">
+        <p class="num">04</p>
+        <h3>Zero-Overhead</h3>
+        <p>Asynchronous collection, toggleable per environment. The request never waits on the dashboard to respond.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">What it does</p>
+    <h2 class="h2">Three pillars</h2>
+    <div class="grid">
+      <div class="card pillar">
+        <span class="tag" style="color: var(--naf-flow-400); border-color: rgba(139,92,246,.45)">Live</span>
+        <h3>Live Tracking</h3>
+        <p>Real-time graph of the request path: Endpoint → Handler → Services → Repositories → SQL. Works with Clean Architecture, Vertical Slices and MediatR.</p>
+      </div>
+      <div class="card pillar">
+        <span class="tag" style="color: var(--naf-warning); border-color: rgba(245,158,11,.45)">Diagnose</span>
+        <h3>Failure &amp; Latency Diagnosis</h3>
+        <p>Duration per step, exception origin, slow steps above threshold, and what never executed — no debugger, no log mining.</p>
+      </div>
+      <div class="card pillar">
+        <span class="tag" style="color: var(--naf-success); border-color: rgba(16,185,129,.45)">Replay</span>
+        <h3>Telemetry &amp; Replay</h3>
+        <p>Execution history with trace ID, filter by tenant and route, and a replay timeline with speed control to see exactly what happened.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="quick-start">
+  <div class="wrap">
+    <p class="eyebrow">Get started</p>
+    <h2 class="h2">Install one package, add a few lines</h2>
+    <p class="section-lead">No separate service to deploy. The dashboard ships embedded in the package and runs next to your API.</p>
+    <div class="card codeblock" style="margin-top: 32px;">
+      <div class="filename"><span>Program.cs</span><span>illustrative example</span></div>
+      <pre><span class="c-cmt">// 1. install the package</span>
+<span class="c-kw">dotnet</span> add package NetApiFlow
+
+<span class="c-cmt">// 2. register and mount the dashboard</span>
+builder.Services.<span class="c-fn">AddNetApiFlow</span>();
+builder.Services.<span class="c-fn">AddNetApiFlowDashboard</span>();
+<span class="c-cmt">// ...</span>
+app.<span class="c-fn">UseNetApiFlowDashboard</span>(<span class="c-str">"/flow"</span>);</pre>
+    </div>
+
+    <h2 class="h2" style="margin-top: 56px;">Every step, color + icon + text</h2>
+    <p class="section-lead">State is never color alone — readable in grayscale, for color-blind users, and on a black-and-white printout.</p>
+    <div class="states-grid">
+      <span class="state-chip"><img src="assets/node-states/waiting.svg" alt="">Waiting</span>
+      <span class="state-chip"><img src="assets/node-states/running.svg" alt="">Running</span>
+      <span class="state-chip"><img src="assets/node-states/completed.svg" alt="">Completed</span>
+      <span class="state-chip"><img src="assets/node-states/slow.svg" alt="">Slow</span>
+      <span class="state-chip"><img src="assets/node-states/error.svg" alt="">Error</span>
+      <span class="state-chip"><img src="assets/node-states/skipped.svg" alt="">Not executed</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">
+      <img src="assets/logo-mark-dark.svg" alt="NetApiFlow">
+      <span class="disp" style="font-weight: 800; letter-spacing: .08em;">NETAPI<span class="accent">FLOW</span></span>
+      <span class="tagline-small">Complex integrations. Linear flows.</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/Douglasproglima/netapiflow">GitHub</a>
+      <a href="https://github.com/Douglasproglima/netapiflow/blob/main/LICENSE">MIT License</a>
+      <a href="https://github.com/joshuamaia/apiflow">Inspired by apiflow</a>
+      <span>&copy; 2026 Douglas Lima</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
