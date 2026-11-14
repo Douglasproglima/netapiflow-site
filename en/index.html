@@ -142,7 +142,7 @@
         <p>Automatic N+1 detection on the graph, an architecture map built from hundreds of real executions, and an aggregated view of the slowest and most error-prone routes.</p>
       </div>
     </div>
-    <p class="section-lead" style="margin-top: 28px;">And more: side-by-side diff between two executions, a trace exported as a file to take anywhere, smart sampling that keeps only what matters, and log/exception correlation per step.</p>
+    <p class="section-lead" style="margin-top: 28px;">And more: side-by-side diff between two executions, a trace exported as a file to take anywhere, smart sampling that keeps only what matters, log/exception correlation per step, and a deploy marker on the history timeline to correlate an incident with someone else's deploy.</p>
   </div>
 </section>
 
@@ -172,6 +172,8 @@ app.<span class="c-fn">UseNetApiFlowDashboard</span>(<span class="c-str">"/flow"
       <span class="state-chip"><img src="../assets/node-states/slow.svg" alt="">Slow</span>
       <span class="state-chip"><img src="../assets/node-states/error.svg" alt="">Error</span>
       <span class="state-chip"><img src="../assets/node-states/skipped.svg" alt="">Not executed</span>
+      <span class="state-chip"><img src="../assets/node-states/cancelled.svg" alt="">Cancelled</span>
+      <span class="state-chip"><img src="../assets/node-states/timeout.svg" alt="">Timeout</span>
     </div>
   </div>
 </section>

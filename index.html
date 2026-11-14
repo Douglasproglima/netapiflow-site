@@ -142,7 +142,7 @@
         <p>Detector de N+1 automático no grafo, mapa de arquitetura construído a partir de centenas de execuções reais, e uma visão agregada das rotas mais lentas e com mais erro.</p>
       </div>
     </div>
-    <p class="section-lead" style="margin-top: 28px;">E mais: diff entre duas execuções lado a lado, trace exportado como arquivo pra levar pra qualquer lugar, sampling inteligente pra reter só o que importa, e log/exceção correlacionados por etapa.</p>
+    <p class="section-lead" style="margin-top: 28px;">E mais: diff entre duas execuções lado a lado, trace exportado como arquivo pra levar pra qualquer lugar, sampling inteligente pra reter só o que importa, log/exceção correlacionados por etapa, e um marco de deploy na linha do tempo do histórico, pra correlacionar um incidente com um deploy de outra pessoa.</p>
   </div>
 </section>
 
@@ -172,6 +172,8 @@ app.<span class="c-fn">UseNetApiFlowDashboard</span>(<span class="c-str">"/flow"
       <span class="state-chip"><img src="assets/node-states/slow.svg" alt="">Lento</span>
       <span class="state-chip"><img src="assets/node-states/error.svg" alt="">Erro</span>
       <span class="state-chip"><img src="assets/node-states/skipped.svg" alt="">Não executado</span>
+      <span class="state-chip"><img src="assets/node-states/cancelled.svg" alt="">Cancelado</span>
+      <span class="state-chip"><img src="assets/node-states/timeout.svg" alt="">Tempo esgotado</span>
     </div>
   </div>
 </section>
