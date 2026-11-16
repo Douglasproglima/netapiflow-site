@@ -47,22 +47,8 @@
       <a class="btn btn-secondary" href="#quick-start">Quick start</a>
     </div>
 
-    <div class="card trace-card">
-      <div class="trace-head">
-        <span class="mono route"><span class="method">POST</span> /api/v1/tickets &middot; trace 7f3a&hellip;c21</span>
-        <span class="total">Total 1,284 ms</span>
-      </div>
-      <div class="trace-row">
-        <span class="node">TicketsEndpoint <span class="dur">3 ms</span></span>
-        <span class="conn ok"></span>
-        <span class="node">CreateTicketHandler <span class="dur">12 ms</span></span>
-        <span class="conn ok"></span>
-        <span class="node state-slow">PricingService <span class="dur">842 ms &middot; slow</span></span>
-        <span class="conn warn"></span>
-        <span class="node state-error">TicketRepository <span class="dur">error &middot; 427 ms</span></span>
-        <span class="conn"></span>
-        <span class="node state-skip mono">INSERT INTO tickets <span class="dur">not executed</span></span>
-      </div>
+    <div class="card demo-card">
+      <img src="../assets/flow-demo.gif" alt="The NetApiFlow flow graph lighting up live as a real request executes" loading="lazy">
     </div>
   </div>
 </header>

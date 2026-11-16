@@ -96,31 +96,8 @@ h1 {
   backdrop-filter: blur(12px);
 }
 
-.trace-card { margin-top: 16px; width: 100%; }
-.trace-head {
-  display: flex; justify-content: space-between; align-items: center;
-  gap: 12px; flex-wrap: wrap; margin-bottom: 16px;
-}
-.trace-head .route { font-size: 13px; color: var(--naf-text-muted); }
-.trace-head .method { color: var(--naf-success); font-weight: 600; }
-.trace-head .total {
-  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .1em;
-  text-transform: uppercase; color: var(--naf-warning);
-  border: 1px solid rgba(245, 158, 11, .4); border-radius: 999px; padding: 4px 10px;
-}
-.trace-row { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 0; }
-.node {
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 9px 13px; border-radius: 12px; background: var(--naf-surface);
-  border: 1px solid var(--naf-border); white-space: nowrap; font-size: 14px;
-}
-.node .dur { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--naf-text-muted); }
-.node.state-slow { border-color: rgba(245, 158, 11, .5); }
-.node.state-error { border-color: rgba(239, 68, 68, .55); }
-.node.state-skip { border-style: dashed; color: var(--naf-text-muted); }
-.conn { width: 26px; height: 2px; background: var(--naf-border); flex: none; }
-.conn.ok { background: var(--naf-success); }
-.conn.warn { background: var(--naf-warning); }
+.demo-card { margin-top: 16px; width: 100%; padding: 0; overflow: hidden; }
+.demo-card img { display: block; width: 100%; height: auto; }
 
 section { padding: 72px 0; border-top: 1px solid var(--naf-border); }
 .h2 {
