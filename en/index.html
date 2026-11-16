@@ -141,6 +141,11 @@
         <h3>Sees what a single run can't</h3>
         <p>Automatic N+1 detection on the graph, an architecture map built from hundreds of real executions, and an aggregated view of the slowest and most error-prone routes.</p>
       </div>
+      <div class="card pillar">
+        <span class="tag" style="color: var(--naf-flow-400); border-color: rgba(139,92,246,.45)">Runner</span>
+        <h3>Test a route without leaving the dashboard</h3>
+        <p>Builds the form straight from your own API's OpenAPI document and fires a real request. On a protected route, paste the token once: the right header is applied automatically to every request, no copy-pasting it again.</p>
+      </div>
     </div>
     <p class="section-lead" style="margin-top: 28px;">And more: side-by-side diff between two executions, a trace exported as a file to take anywhere, smart sampling that keeps only what matters, log/exception correlation per step, and a deploy marker on the history timeline to correlate an incident with someone else's deploy.</p>
   </div>
@@ -157,10 +162,14 @@
 <span class="c-kw">dotnet</span> add package NetApiFlow
 
 <span class="c-cmt">// 2. register and mount the dashboard</span>
+<span class="c-kw">using</span> NetApiFlow;
+<span class="c-kw">using</span> NetApiFlow.Dashboard;
+<span class="c-kw">using</span> NetApiFlow.Dashboard.Endpoints;
+
 builder.Services.<span class="c-fn">AddNetApiFlow</span>();
 builder.Services.<span class="c-fn">AddNetApiFlowDashboard</span>();
 <span class="c-cmt">// ...</span>
-app.<span class="c-fn">UseNetApiFlowDashboard</span>(<span class="c-str">"/flow"</span>);</pre>
+app.<span class="c-fn">UseNetApiFlowDashboard</span>(); <span class="c-cmt">// mounted at /flow by default</span></pre>
     </div>
 
     <h2 class="h2" style="margin-top: 56px;">Every step, color plus icon plus text</h2>

@@ -141,6 +141,11 @@
         <h3>Acha o que não dá pra ver numa execução só</h3>
         <p>Detector de N+1 automático no grafo, mapa de arquitetura construído a partir de centenas de execuções reais, e uma visão agregada das rotas mais lentas e com mais erro.</p>
       </div>
+      <div class="card pillar">
+        <span class="tag" style="color: var(--naf-flow-400); border-color: rgba(139,92,246,.45)">Runner</span>
+        <h3>Testa uma rota sem sair do dashboard</h3>
+        <p>Monta o formulário direto do documento OpenAPI da sua própria API e dispara a requisição de verdade. Numa rota protegida, cole o token uma vez: o header certo é aplicado automaticamente em cada requisição, sem copiar e colar de novo.</p>
+      </div>
     </div>
     <p class="section-lead" style="margin-top: 28px;">E mais: diff entre duas execuções lado a lado, trace exportado como arquivo pra levar pra qualquer lugar, sampling inteligente pra reter só o que importa, log/exceção correlacionados por etapa, e um marco de deploy na linha do tempo do histórico, pra correlacionar um incidente com um deploy de outra pessoa.</p>
   </div>
@@ -157,10 +162,14 @@
 <span class="c-kw">dotnet</span> add package NetApiFlow
 
 <span class="c-cmt">// 2. registre e monte o dashboard</span>
+<span class="c-kw">using</span> NetApiFlow;
+<span class="c-kw">using</span> NetApiFlow.Dashboard;
+<span class="c-kw">using</span> NetApiFlow.Dashboard.Endpoints;
+
 builder.Services.<span class="c-fn">AddNetApiFlow</span>();
 builder.Services.<span class="c-fn">AddNetApiFlowDashboard</span>();
 <span class="c-cmt">// ...</span>
-app.<span class="c-fn">UseNetApiFlowDashboard</span>(<span class="c-str">"/flow"</span>);</pre>
+app.<span class="c-fn">UseNetApiFlowDashboard</span>(); <span class="c-cmt">// montado em /flow por padrão</span></pre>
     </div>
 
     <h2 class="h2" style="margin-top: 56px;">Toda etapa, cor, ícone e texto</h2>
