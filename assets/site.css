@@ -119,6 +119,9 @@ section { padding: 72px 0; border-top: 1px solid var(--naf-border); }
   letter-spacing: .1em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px;
   border: 1px solid var(--naf-border); color: var(--naf-text-muted);
 }
+.pillar .tag.tag--flow { color: var(--naf-flow-400); border-color: rgba(139, 92, 246, .45); }
+.pillar .tag.tag--warning { color: var(--naf-warning); border-color: rgba(245, 158, 11, .45); }
+.pillar .tag.tag--success { color: var(--naf-success); border-color: rgba(16, 185, 129, .45); }
 .pillar h3 { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 20px; margin: 0; }
 .pillar p { font-size: 14px; color: var(--naf-text-muted); line-height: 1.65; margin: 0; }
 
@@ -158,10 +161,20 @@ footer { border-top: 1px solid var(--naf-border); background: #0C0F16; padding: 
 
 @media (prefers-color-scheme: light) {
   body { background: #F8FAFC; color: #0F172A; }
-  .lead, .section-lead, .principle p, .pillar p, .node .dur, .nav-links a, .footer-links,
-  .footer-links a, .footer-brand span.tagline-small { color: #475569; }
+  a { color: var(--naf-flow-600); }
+  .lead, .section-lead, .principle p, .pillar p, .nav-links a, .footer-links,
+  .footer-links a, .footer-brand span.tagline-small, .codeblock .filename,
+  .lang-switch a { color: #475569; }
+  .eyebrow, .tagline, .brand .accent, .principle .num { color: var(--naf-flow-600); }
+  .pillar .tag.tag--flow { color: var(--naf-flow-600); border-color: rgba(124, 58, 237, .35); }
+  .pillar .tag.tag--warning { color: #92400E; border-color: rgba(146, 64, 14, .35); }
+  .pillar .tag.tag--success { color: #047857; border-color: rgba(4, 120, 87, .35); }
+  pre { color: #1E293B; }
+  .c-cmt { color: #475569; }
+  .c-kw { color: var(--naf-flow-600); }
+  .c-fn { color: #047857; }
+  .c-str { color: #92400E; }
   .card { background: rgba(255, 255, 255, .8); border-color: #E2E8F0; }
-  .node { background: #F1F5F9; border-color: #E2E8F0; }
   .lang-switch a.active { background: #E2E8F0; color: #0F172A; }
   header.hero, section, footer { border-color: #E2E8F0; }
   footer { background: #F1F5F9; }

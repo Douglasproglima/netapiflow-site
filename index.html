@@ -38,9 +38,10 @@
     <h1>NETAPI<span class="accent">FLOW</span></h1>
     <p class="tagline">Integrações complexas. Fluxos lineares.</p>
     <p class="lead">
-      Biblioteca open source para ASP.NET Core que mostra, ao vivo, o caminho de cada
-      requisição HTTP dentro da sua API, do endpoint ao comando SQL, com duração, falhas,
-      lentidão e o que nunca chegou a executar.
+      Uma rota fica lenta numa terça à tarde. Ninguém sabe se o problema é no banco, num
+      serviço externo, ou numa lógica que nem chegou a rodar. O NetApiFlow mostra o caminho
+      de cada requisição HTTP dentro da sua própria API, ao vivo, do endpoint ao comando SQL.
+      Duração de cada etapa, onde falhou, e o que deveria ter executado e nunca executou.
     </p>
     <div class="cta-row">
       <a class="btn btn-primary" href="https://github.com/Douglasproglima/netapiflow">Ver no GitHub</a>
@@ -88,17 +89,17 @@
     <h2 class="h2">Três pilares</h2>
     <div class="grid">
       <div class="card pillar">
-        <span class="tag" style="color: var(--naf-flow-400); border-color: rgba(139,92,246,.45)">Live</span>
+        <span class="tag tag--flow">Live</span>
         <h3>Rastreamento ao vivo</h3>
         <p>Grafo em tempo real do caminho da requisição. Endpoint, depois Handler, depois Services, depois Repositories, depois SQL. Funciona com Clean Architecture, Vertical Slices e MediatR.</p>
       </div>
       <div class="card pillar">
-        <span class="tag" style="color: var(--naf-warning); border-color: rgba(245,158,11,.45)">Diagnose</span>
+        <span class="tag tag--warning">Diagnose</span>
         <h3>Diagnóstico de falha e lentidão</h3>
         <p>Duração por etapa, ponto de origem da exceção, etapas lentas acima do limite e o que deixou de executar, sem abrir debugger nem garimpar log.</p>
       </div>
       <div class="card pillar">
-        <span class="tag" style="color: var(--naf-success); border-color: rgba(16,185,129,.45)">Replay</span>
+        <span class="tag tag--success">Replay</span>
         <h3>Telemetria e replay</h3>
         <p>Histórico de execuções com trace ID, filtro por tenant e rota, e timeline de replay com controle de velocidade para rever exatamente o que aconteceu.</p>
       </div>
@@ -113,22 +114,22 @@
     <p class="section-lead">Rastrear a requisição é só o começo. O resto do ecossistema ajuda a achar problema antes do incidente, e a levar o trace pra onde você já trabalha.</p>
     <div class="grid" style="margin-top: 32px;">
       <div class="card pillar">
-        <span class="tag" style="color: var(--naf-flow-400); border-color: rgba(139,92,246,.45)">MCP</span>
+        <span class="tag tag--flow">MCP</span>
         <h3>Pronto pra um agente de IA</h3>
         <p>Sua própria API expõe um servidor MCP: um agente lista traces recentes, busca um por id e lê estatística por componente, sem nenhum cliente REST escrito à mão.</p>
       </div>
       <div class="card pillar">
-        <span class="tag" style="color: var(--naf-warning); border-color: rgba(245,158,11,.45)">OTLP</span>
+        <span class="tag tag--warning">OTLP</span>
         <h3>Interopera com seu stack</h3>
         <p>Exporta o mesmo trace pro Jaeger, Tempo, Aspire Dashboard, Honeycomb ou qualquer coletor compatível com OpenTelemetry. Ingestão nativa de Npgsql e HttpClient, sem duplicar span.</p>
       </div>
       <div class="card pillar">
-        <span class="tag" style="color: var(--naf-success); border-color: rgba(16,185,129,.45)">Insights</span>
+        <span class="tag tag--success">Insights</span>
         <h3>Acha o que não dá pra ver numa execução só</h3>
         <p>Detector de N+1 automático no grafo, mapa de arquitetura construído a partir de centenas de execuções reais, e uma visão agregada das rotas mais lentas e com mais erro.</p>
       </div>
       <div class="card pillar">
-        <span class="tag" style="color: var(--naf-flow-400); border-color: rgba(139,92,246,.45)">Runner</span>
+        <span class="tag tag--flow">Runner</span>
         <h3>Testa uma rota sem sair do dashboard</h3>
         <p>Monta o formulário direto do documento OpenAPI da sua própria API e dispara a requisição de verdade. Numa rota protegida, cole o token uma vez: o header certo é aplicado automaticamente em cada requisição, sem copiar e colar de novo.</p>
       </div>

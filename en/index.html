@@ -38,9 +38,11 @@
     <h1>NETAPI<span class="accent">FLOW</span></h1>
     <p class="tagline">Complex integrations. Linear flows.</p>
     <p class="lead">
-      Open source library for ASP.NET Core that shows, live, the path of every HTTP request
-      inside your API, from endpoint to SQL command, with duration, failures, slow steps,
-      and what never ran.
+      A route goes slow on a random Tuesday afternoon. Nobody knows if the problem is the
+      database, an external service, or a branch of logic that never even ran. NetApiFlow
+      shows the exact path of every HTTP request inside your own API, live, from the endpoint
+      to the SQL command. Duration per step, where it failed, and what should have run and
+      never did.
     </p>
     <div class="cta-row">
       <a class="btn btn-primary" href="https://github.com/Douglasproglima/netapiflow">View on GitHub</a>
@@ -88,17 +90,17 @@
     <h2 class="h2">Three pillars</h2>
     <div class="grid">
       <div class="card pillar">
-        <span class="tag" style="color: var(--naf-flow-400); border-color: rgba(139,92,246,.45)">Live</span>
+        <span class="tag tag--flow">Live</span>
         <h3>Live Tracking</h3>
         <p>Real time graph of the request path. Endpoint, then Handler, then Services, then Repositories, then SQL. Works with Clean Architecture, Vertical Slices and MediatR.</p>
       </div>
       <div class="card pillar">
-        <span class="tag" style="color: var(--naf-warning); border-color: rgba(245,158,11,.45)">Diagnose</span>
+        <span class="tag tag--warning">Diagnose</span>
         <h3>Failure &amp; Latency Diagnosis</h3>
         <p>Duration per step, exception origin, slow steps above threshold, and what never executed, without opening a debugger or mining logs.</p>
       </div>
       <div class="card pillar">
-        <span class="tag" style="color: var(--naf-success); border-color: rgba(16,185,129,.45)">Replay</span>
+        <span class="tag tag--success">Replay</span>
         <h3>Telemetry &amp; Replay</h3>
         <p>Execution history with trace ID, filter by tenant and route, and a replay timeline with speed control to see exactly what happened.</p>
       </div>
@@ -113,22 +115,22 @@
     <p class="section-lead">Tracing the request is just the start. The rest of the ecosystem helps you find a problem before it's an incident, and bring the trace to where you already work.</p>
     <div class="grid" style="margin-top: 32px;">
       <div class="card pillar">
-        <span class="tag" style="color: var(--naf-flow-400); border-color: rgba(139,92,246,.45)">MCP</span>
+        <span class="tag tag--flow">MCP</span>
         <h3>Ready for an AI agent</h3>
         <p>Your own API exposes an MCP server: an agent lists recent traces, fetches one by id, and reads per-component statistics, with no hand-written REST client.</p>
       </div>
       <div class="card pillar">
-        <span class="tag" style="color: var(--naf-warning); border-color: rgba(245,158,11,.45)">OTLP</span>
+        <span class="tag tag--warning">OTLP</span>
         <h3>Interops with your stack</h3>
         <p>Exports the same trace to Jaeger, Tempo, Aspire Dashboard, Honeycomb, or any OpenTelemetry-compatible collector. Native Npgsql and HttpClient ingestion, no duplicate spans.</p>
       </div>
       <div class="card pillar">
-        <span class="tag" style="color: var(--naf-success); border-color: rgba(16,185,129,.45)">Insights</span>
+        <span class="tag tag--success">Insights</span>
         <h3>Sees what a single run can't</h3>
         <p>Automatic N+1 detection on the graph, an architecture map built from hundreds of real executions, and an aggregated view of the slowest and most error-prone routes.</p>
       </div>
       <div class="card pillar">
-        <span class="tag" style="color: var(--naf-flow-400); border-color: rgba(139,92,246,.45)">Runner</span>
+        <span class="tag tag--flow">Runner</span>
         <h3>Test a route without leaving the dashboard</h3>
         <p>Builds the form straight from your own API's OpenAPI document and fires a real request. On a protected route, paste the token once: the right header is applied automatically to every request, no copy-pasting it again.</p>
       </div>
