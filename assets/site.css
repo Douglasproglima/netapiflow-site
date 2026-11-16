@@ -144,7 +144,7 @@ pre {
 .state-chip {
   display: inline-flex; align-items: center; gap: 10px; padding: 10px 14px;
   border-radius: 12px; background: var(--naf-surface); border: 1px solid var(--naf-border);
-  font-size: 14px; font-weight: 500;
+  font-size: 14px; font-weight: 500; color: var(--naf-text);
 }
 .state-chip img { width: 18px; height: 18px; }
 
