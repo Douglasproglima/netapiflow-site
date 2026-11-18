@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <title>NetApiFlow</title>
+    <script>
+      // GitHub Pages only serves a 404.html at the site root, never one inside a subpath, so the
+      // demo (an Angular SPA at /demo/) needs this redirect to turn a deep link into something
+      // its own index.html can decode back into the real route. Based on the well-known
+      // spa-github-pages pattern (https://github.com/rafgraph/spa-github-pages, MIT).
+      (function () {
+        var repoPrefix = '/netapiflow-site';
+        var demoPrefix = repoPrefix + '/demo/';
+        var path = window.location.pathname;
+        if (path.indexOf(demoPrefix) === 0) {
+          var rest = path.slice(demoPrefix.length);
+          var query = window.location.search ? window.location.search.slice(1).replace(/&/g, '~and~') : '';
+          var encoded = '?/' + rest.replace(/&/g, '~and~') + (query ? '&' + query : '');
+          window.location.replace(repoPrefix + '/demo/' + encoded + window.location.hash);
+          return;
+        }
+        window.location.replace(repoPrefix + '/');
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>
