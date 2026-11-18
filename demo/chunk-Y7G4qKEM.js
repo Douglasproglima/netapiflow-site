@@ -1,0 +1,1 @@
+function r(t,n=2){return String(t).padStart(n,`0`)}function e(t){return`${r(t.getDate())}/${r(t.getMonth()+1)} ${r(t.getHours())}:${r(t.getMinutes())}:${r(t.getSeconds())}`}function g(t){return`${r(t.getDate())}/${r(t.getMonth()+1)}/${t.getFullYear()} ${r(t.getHours())}:${r(t.getMinutes())}:${r(t.getSeconds())}.${r(t.getMilliseconds(),3)}`}export{g as n,e as t};

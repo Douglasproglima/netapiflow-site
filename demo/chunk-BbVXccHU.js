@@ -1,0 +1,1 @@
+var a={GET:`naf-tag--get`,POST:`naf-tag--post`,PUT:`naf-tag--put`,PATCH:`naf-tag--patch`,DELETE:`naf-tag--delete`};function n(t){return a[t.toUpperCase()]??``}export{n as t};

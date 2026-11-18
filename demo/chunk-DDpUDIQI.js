@@ -1,0 +1,1 @@
+var t={"15m":15,"1h":60,"24h":1440,"7d":10080,"30d":43200};function o(e,r){return(/* @__PURE__ */ new Date(r.getTime()-t[e]*6e4)).toISOString()}export{o as t};
