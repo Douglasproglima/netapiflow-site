@@ -135,6 +135,11 @@
         <h3>Test a route without leaving the dashboard</h3>
         <p>Builds the form straight from your own API's OpenAPI document and fires a real request. On a protected route, paste the token once: the right header is applied automatically to every request, no copy-pasting it again.</p>
       </div>
+      <div class="card pillar">
+        <span class="tag tag--success">Testing</span>
+        <h3>Asserts on the flow, in your integration tests</h3>
+        <p><a href="https://www.nuget.org/packages/NetApiFlow.Testing">NetApiFlow.Testing</a> turns "this endpoint must not hit the database more than three times" into a test that fails when it does, instead of something you notice by eye in the dashboard. It pulls in no assertion library.</p>
+      </div>
     </div>
     <p class="section-lead" style="margin-top: 28px;">And more: side-by-side diff between two executions, a trace exported as a file to take anywhere, smart sampling that keeps only what matters, log/exception correlation per step, and a deploy marker on the history timeline to correlate an incident with someone else's deploy.</p>
   </div>

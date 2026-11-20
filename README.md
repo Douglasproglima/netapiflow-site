@@ -55,6 +55,47 @@ servidor estático:
 python -m http.server 8080
 ```
 
+## Atualizar a demo
+
+A demo em `demo/` é o dashboard do NetApiFlow compilado contra dados gravados, e é regenerada a
+cada release a partir da tag, nunca da `develop`. A pasta `demo/` inteira é substituída: os nomes
+dos arquivos do Angular levam hash, então copiar por cima deixaria arquivo velho para trás.
+
+1. No repositório `netapiflow`, crie um worktree da tag, sem mexer no checkout principal:
+
+   ```bash
+   git worktree add ../netapiflow-v<versao> v<versao>
+   ```
+
+2. No `ClientApp` desse worktree, compile com o `base href` do GitHub Pages. O Git Bash no Windows
+   reescreve um argumento que começa com `/`, então desligue a conversão de caminho:
+
+   ```bash
+   cd ../netapiflow-v<versao>/src/NetApiFlow.Dashboard/ClientApp
+   npm ci
+   MSYS_NO_PATHCONV=1 npx ng build --configuration demo --base-href /netapiflow-site/demo/
+   ```
+
+3. Neste repositório, troque a pasta pelo conteúdo de `dist/demo/browser`:
+
+   ```bash
+   git pull --ff-only
+   git rm -r demo
+   cp -r <caminho do worktree>/src/NetApiFlow.Dashboard/ClientApp/dist/demo/browser demo
+   ```
+
+4. Reponha em `demo/index.html` o script que decodifica o redirecionamento do `404.html` da raiz.
+   Ele fica logo depois de `<base href="/netapiflow-site/demo/">`, antes de qualquer outro script.
+   Copie o bloco do `index.html` anterior (`git show HEAD:demo/index.html`).
+
+5. Confira num servidor local que serve a raiz do `404.html` para caminho inexistente, como o
+   GitHub Pages faz:
+   - o diálogo Sobre mostra a versão da tag;
+   - o layout mobile aparece em 390x844, sem rolagem horizontal;
+   - um link direto como `/netapiflow-site/demo/history` abre a tela, e não o 404.
+
+6. Remova o worktree (`git worktree remove`) e publique: um push em `main` atualiza o site na hora.
+
 ## Deploy
 
 Publicado via GitHub Pages, direto da raiz do branch `main`. Qualquer push em `main` atualiza o
