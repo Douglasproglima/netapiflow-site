@@ -21,7 +21,7 @@
     </div>
     <div class="nav-links">
       <a href="https://github.com/Douglasproglima/netapiflow">GitHub</a>
-      <a href="https://github.com/Douglasproglima/netapiflow#readme">Documentação</a>
+      <a href="https://github.com/Douglasproglima/netapiflow/blob/main/README.pt-BR.md">Documentação</a>
       <a href="https://www.nuget.org/packages/NetApiFlow">NuGet</a>
       <span class="lang-switch">
         <a class="active" href="./">PT</a>
@@ -63,7 +63,7 @@
       <div class="principle">
         <p class="num">01</p>
         <h3>Tipagem forte (.NET)</h3>
-        <p>Integração nativa com DI e middleware do ASP.NET Core. Eventos de rastreamento tipados, sem strings mágicas nem reflexão no caminho crítico.</p>
+        <p>Integração nativa com DI e middleware do ASP.NET Core, com eventos de rastreamento tipados. Marcar uma etapa com NetApiFlow.Step ou num endpoint não usa reflexão. O proxy opcional AddFlowTracked usa.</p>
       </div>
       <div class="principle">
         <p class="num">02</p>
@@ -73,12 +73,12 @@
       <div class="principle">
         <p class="num">03</p>
         <h3>Configuração fluente</h3>
-        <p>Um pacote NuGet, poucas linhas de código, uma URL local. Filtro por rota e por tenant, compostos numa API fluente.</p>
+        <p>Dois pacotes NuGet, poucas linhas de código, uma URL local. Filtro por rota, composto numa API fluente.</p>
       </div>
       <div class="principle">
         <p class="num">04</p>
         <h3>Overhead medido</h3>
-        <p>Coleta assíncrona e desligável por ambiente. Com rastreamento ligado, o custo medido é de cerca de 20 microssegundos por requisição, <a href="https://github.com/Douglasproglima/netapiflow/blob/main/README.pt-BR.md#desempenho-e-overhead">benchmark publicado</a>, não estimado.</p>
+        <p>Coleta assíncrona e desligável por ambiente. Medido na 0.1.0 com BenchmarkDotNet em uma máquina: cerca de 20 microssegundos por requisição sem nenhuma etapa marcada, e cerca de 32 com quatro etapas aninhadas. O <a href="https://github.com/Douglasproglima/netapiflow/blob/main/README.pt-BR.md#desempenho-e-overhead">benchmark publicado</a>, não estimado.</p>
       </div>
     </div>
   </div>
@@ -102,7 +102,7 @@
       <div class="card pillar">
         <span class="tag tag--success">Replay</span>
         <h3>Telemetria e replay</h3>
-        <p>Histórico de execuções com trace ID, filtro por tenant e rota, e timeline de replay com controle de velocidade para rever exatamente o que aconteceu.</p>
+        <p>Histórico de execuções com trace ID, filtro por rota, e timeline de replay com controle de velocidade para rever exatamente o que aconteceu.</p>
       </div>
     </div>
   </div>
@@ -147,12 +147,13 @@
 <section id="comecar">
   <div class="wrap">
     <p class="eyebrow">Para começar</p>
-    <h2 class="h2">Instale um pacote, adicione poucas linhas</h2>
-    <p class="section-lead">Nenhum serviço separado para fazer deploy. O dashboard vem embutido no pacote e roda junto da sua API.</p>
+    <h2 class="h2">Instale dois pacotes, adicione poucas linhas</h2>
+    <p class="section-lead">Nenhum serviço separado para fazer deploy. O dashboard vem embutido no pacote NetApiFlow.Dashboard e roda junto da sua API.</p>
     <div class="card codeblock" style="margin-top: 32px;">
       <div class="filename"><span>Program.cs</span><span>exemplo ilustrativo</span></div>
-      <pre><span class="c-cmt">// 1. instale o pacote</span>
+      <pre><span class="c-cmt">// 1. instale os pacotes</span>
 <span class="c-kw">dotnet</span> add package NetApiFlow
+<span class="c-kw">dotnet</span> add package NetApiFlow.Dashboard
 
 <span class="c-cmt">// 2. registre e monte o dashboard</span>
 <span class="c-kw">using</span> NetApiFlow;
@@ -162,8 +163,13 @@
 builder.Services.<span class="c-fn">AddNetApiFlow</span>();
 builder.Services.<span class="c-fn">AddNetApiFlowDashboard</span>();
 <span class="c-cmt">// ...</span>
-app.<span class="c-fn">UseNetApiFlowDashboard</span>(); <span class="c-cmt">// montado em /flow por padrão</span></pre>
+app.<span class="c-fn">UseNetApiFlowDashboard</span>(); <span class="c-cmt">// montado em /flow por padrão</span>
+
+<span class="c-cmt">// 3. marque um endpoint como etapa (controllers MVC não precisam de nada)</span>
+app.<span class="c-fn">MapGet</span>("/hello", () =&gt; "Hello")
+    .<span class="c-fn">WithNetApiFlowTracking</span>();</pre>
     </div>
+    <p class="section-lead" style="margin-top: 24px;">Um endpoint de Minimal API só vira etapa com WithNetApiFlowTracking, no endpoint ou num grupo inteiro. Sem a chamada, a requisição aparece na lista, com zero etapas.</p>
 
     <h2 class="h2" style="margin-top: 56px;">Toda etapa, cor, ícone e texto</h2>
     <p class="section-lead">Estado nunca é só cor. Continua legível em escala de cinza, para quem tem daltonismo, e numa impressão em preto e branco.</p>
