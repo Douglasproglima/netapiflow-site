@@ -64,7 +64,7 @@
       <div class="principle">
         <p class="num">01</p>
         <h3>Strongly Typed (.NET)</h3>
-        <p>Native DI and ASP.NET Core middleware integration. Typed tracking events, no magic strings or reflection on the critical path.</p>
+        <p>Native DI and ASP.NET Core middleware integration, with typed tracking events. Marking a step with NetApiFlow.Step or on an endpoint uses no reflection. The optional AddFlowTracked proxy does.</p>
       </div>
       <div class="principle">
         <p class="num">02</p>
@@ -74,12 +74,12 @@
       <div class="principle">
         <p class="num">03</p>
         <h3>Fluent Configuration</h3>
-        <p>One NuGet package, a couple of lines of code, one local URL. Filters by route and tenant, composed in a fluent API.</p>
+        <p>Two NuGet packages, a few lines of code, one local URL. Filters by route, composed in a fluent API.</p>
       </div>
       <div class="principle">
         <p class="num">04</p>
         <h3>Measured Overhead</h3>
-        <p>Asynchronous collection, toggleable per environment. With tracing on, the measured cost is about 20 microseconds per request, a <a href="https://github.com/Douglasproglima/netapiflow#performance-and-overhead">published benchmark</a>, not an estimate.</p>
+        <p>Asynchronous collection, toggleable per environment. Measured with BenchmarkDotNet on one machine: about 20 microseconds per request with no steps marked, and about 32 with four nested steps. The <a href="https://github.com/Douglasproglima/netapiflow#performance-and-overhead">benchmark and its method</a> are published.</p>
       </div>
     </div>
   </div>
@@ -148,12 +148,13 @@
 <section id="quick-start">
   <div class="wrap">
     <p class="eyebrow">Get started</p>
-    <h2 class="h2">Install one package, add a few lines</h2>
-    <p class="section-lead">No separate service to deploy. The dashboard ships embedded in the package and runs next to your API.</p>
+    <h2 class="h2">Install two packages, add a few lines</h2>
+    <p class="section-lead">No separate service to deploy. The dashboard ships embedded in the NetApiFlow.Dashboard package and runs next to your API.</p>
     <div class="card codeblock" style="margin-top: 32px;">
       <div class="filename"><span>Program.cs</span><span>illustrative example</span></div>
-      <pre><span class="c-cmt">// 1. install the package</span>
+      <pre><span class="c-cmt">// 1. install the packages</span>
 <span class="c-kw">dotnet</span> add package NetApiFlow
+<span class="c-kw">dotnet</span> add package NetApiFlow.Dashboard
 
 <span class="c-cmt">// 2. register and mount the dashboard</span>
 <span class="c-kw">using</span> NetApiFlow;
@@ -163,8 +164,13 @@
 builder.Services.<span class="c-fn">AddNetApiFlow</span>();
 builder.Services.<span class="c-fn">AddNetApiFlowDashboard</span>();
 <span class="c-cmt">// ...</span>
-app.<span class="c-fn">UseNetApiFlowDashboard</span>(); <span class="c-cmt">// mounted at /flow by default</span></pre>
+app.<span class="c-fn">UseNetApiFlowDashboard</span>(); <span class="c-cmt">// mounted at /flow by default</span>
+
+<span class="c-cmt">// 3. mark an endpoint as a step (MVC controllers need nothing)</span>
+app.<span class="c-fn">MapGet</span>("/hello", () =&gt; "Hello")
+    .<span class="c-fn">WithNetApiFlowTracking</span>();</pre>
     </div>
+    <p class="section-lead" style="margin-top: 24px;">A Minimal API endpoint only becomes a step with WithNetApiFlowTracking, on the endpoint or on a whole group. Without it the request is still listed, with zero steps.</p>
 
     <h2 class="h2" style="margin-top: 56px;">Every step, color plus icon plus text</h2>
     <p class="section-lead">State is never color alone. It stays readable in grayscale, for color blind users, and on a black and white printout.</p>
