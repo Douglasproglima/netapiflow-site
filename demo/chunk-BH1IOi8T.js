@@ -1,4 +1,4 @@
-import{Ft as _$1,X as OE,dn as g,o as As,sr as vI,vr as yI,wt as Wp,xr as yp}from"./chunk-pLN7f8QD.js";import{t as I$1}from"./chunk-BdXIhzDe.js";var p=new _$1(`MAT_CARD_CONFIG`);var I=(()=>{class t{appearance;constructor(){let r=g(p,{optional:!0});this.appearance=r?.appearance||`raised`}static ɵfac=function(a){return new(a||t)};static ɵcmp=(function(){return OE({type:t,selectors:[[`mat-card`]],hostAttrs:[1,`mat-mdc-card`,`mdc-card`],hostVars:8,hostBindings:function(n,e){n&2&&Wp(`mat-mdc-card-outlined`,e.appearance===`outlined`)(`mdc-card--outlined`,e.appearance===`outlined`)(`mat-mdc-card-filled`,e.appearance===`filled`)(`mdc-card--filled`,e.appearance===`filled`)},inputs:{appearance:`appearance`},exportAs:[`matCard`],ngContentSelectors:[`*`],decls:1,vars:0,template:function(n,e){n&1&&(yI(),vI(0))},styles:[`.mat-mdc-card {
+import{t as I$1}from"./chunk-5w0NYokY.js";import{Ht as _s,Ot as Wp,br as yI,dt as S,st as RE,un as g,wr as yp,zn as mI}from"./chunk-8WZe5vA6.js";var p=new S(`MAT_CARD_CONFIG`);var I=(()=>{class t{appearance;constructor(){let r=g(p,{optional:!0});this.appearance=r?.appearance||`raised`}static ɵfac=function(a){return new(a||t)};static ɵcmp=(function(){return RE({type:t,selectors:[[`mat-card`]],hostAttrs:[1,`mat-mdc-card`,`mdc-card`],hostVars:8,hostBindings:function(n,e){n&2&&Wp(`mat-mdc-card-outlined`,e.appearance===`outlined`)(`mdc-card--outlined`,e.appearance===`outlined`)(`mat-mdc-card-filled`,e.appearance===`filled`)(`mdc-card--filled`,e.appearance===`filled`)},inputs:{appearance:`appearance`},exportAs:[`matCard`],ngContentSelectors:[`*`],decls:1,vars:0,template:function(n,e){n&1&&(mI(),yI(0))},styles:[`.mat-mdc-card {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -168,4 +168,4 @@ import{Ft as _$1,X as OE,dn as g,o as As,sr as vI,vr as yI,wt as Wp,xr as yp}fro
 .mat-mdc-card-actions-align-end {
   justify-content: flex-end;
 }
-`],encapsulation:2})})()}return t})();var _=(()=>{class t{static ɵfac=function(a){return new(a||t)};static ɵmod=yp({type:t});static ɵinj=As({imports:[I$1]})}return t})();export{_ as n,I as t};
+`],encapsulation:2})})()}return t})();var _=(()=>{class t{static ɵfac=function(a){return new(a||t)};static ɵmod=yp({type:t});static ɵinj=_s({imports:[I$1]})}return t})();export{_ as n,I as t};
