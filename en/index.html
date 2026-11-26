@@ -64,7 +64,7 @@
       <div class="principle">
         <p class="num">01</p>
         <h3>Strongly Typed (.NET)</h3>
-        <p>Native DI and ASP.NET Core middleware integration, with typed tracking events. Marking a step with NetApiFlow.Step or on an endpoint uses no reflection. The optional AddFlowTracked proxy does.</p>
+        <p>Native DI and ASP.NET Core middleware integration, with typed tracking events. Marking a step with Flow.Step uses no reflection. The optional proxy of AddFlowTracked, DecorateFlowTracked and TrackFlowByConvention does.</p>
       </div>
       <div class="principle">
         <p class="num">02</p>
@@ -79,7 +79,7 @@
       <div class="principle">
         <p class="num">04</p>
         <h3>Measured Overhead</h3>
-        <p>Asynchronous collection, toggleable per environment. Measured on 0.1.0 with BenchmarkDotNet on one machine: about 20 microseconds per request with no steps marked, and about 32 with four nested steps. The <a href="https://github.com/Douglasproglima/netapiflow#performance-and-overhead">benchmark and its method</a> are published.</p>
+        <p>Asynchronous collection, toggleable per environment. Measured on 0.6.0 with BenchmarkDotNet, on .NET 8 and .NET 10, on one laptop that was also running other programs, so read it as an order of magnitude. Tracing adds about 13 to 14 microseconds to a request with no steps marked, and about 16 to 23 with four nested steps. With Enabled = false it adds 0.4 to 1.7. The <a href="https://github.com/Douglasproglima/netapiflow#performance-and-overhead">benchmark and its method</a> are published.</p>
       </div>
     </div>
   </div>
@@ -151,26 +151,42 @@
     <h2 class="h2">Install two packages, add a few lines</h2>
     <p class="section-lead">No separate service to deploy. The dashboard ships embedded in the NetApiFlow.Dashboard package and runs next to your API.</p>
     <div class="card codeblock" style="margin-top: 32px;">
-      <div class="filename"><span>Program.cs</span><span>illustrative example</span></div>
-      <pre><span class="c-cmt">// 1. install the packages</span>
-<span class="c-kw">dotnet</span> add package NetApiFlow
-<span class="c-kw">dotnet</span> add package NetApiFlow.Dashboard
-
-<span class="c-cmt">// 2. register and mount the dashboard</span>
-<span class="c-kw">using</span> NetApiFlow;
+      <div class="filename"><span>Terminal</span><span>in a project made with dotnet new webapi</span></div>
+      <pre id="quick-start-packages"><span class="c-kw">dotnet</span> add package NetApiFlow
+<span class="c-kw">dotnet</span> add package NetApiFlow.Dashboard</pre>
+    </div>
+    <p class="section-lead" style="margin-top: 24px;">Update the NetApiFlow packages together. Each package asks for the core at exactly its own version. If they do not match, NuGet says so when it restores: NU1605 (an error) when the core is older than a package needs, NU1608 (a warning) when it is newer.</p>
+    <p class="section-lead" style="margin-top: 24px;">Then put this in Program.cs. On .NET 10, AddOpenApi and MapOpenApi are the template's own, so keep them: the Runner lists your endpoints from your app's OpenAPI document. The /hello line stands for your own endpoints.</p>
+    <div class="card codeblock" style="margin-top: 24px;">
+      <div class="filename"><span>Program.cs</span><span>.NET 10</span></div>
+      <pre id="quick-start-program"><span class="c-kw">using</span> NetApiFlow;
 <span class="c-kw">using</span> NetApiFlow.Dashboard;
 <span class="c-kw">using</span> NetApiFlow.Dashboard.Endpoints;
 
+<span class="c-kw">var</span> builder = WebApplication.<span class="c-fn">CreateBuilder</span>(args);
+builder.Services.<span class="c-fn">AddOpenApi</span>();
 builder.Services.<span class="c-fn">AddNetApiFlow</span>();
 builder.Services.<span class="c-fn">AddNetApiFlowDashboard</span>();
-<span class="c-cmt">// ...</span>
-app.<span class="c-fn">UseNetApiFlowDashboard</span>(); <span class="c-cmt">// mounted at /flow by default</span>
 
-<span class="c-cmt">// 3. mark an endpoint as a step (MVC controllers need nothing)</span>
-app.<span class="c-fn">MapGet</span>("/hello", () =&gt; "Hello")
-    .<span class="c-fn">WithNetApiFlowTracking</span>();</pre>
+<span class="c-kw">var</span> app = builder.<span class="c-fn">Build</span>();
+<span class="c-kw">if</span> (app.Environment.<span class="c-fn">IsDevelopment</span>())
+{
+    app.<span class="c-fn">MapOpenApi</span>();
+}
+
+app.<span class="c-fn">MapNetApiFlowDashboard</span>(); <span class="c-cmt">// mounted at /flow by default</span>
+
+app.<span class="c-fn">MapGet</span>("/hello", () =&gt; "Hello");
+
+app.<span class="c-fn">Run</span>();</pre>
     </div>
-    <p class="section-lead" style="margin-top: 24px;">A Minimal API endpoint only becomes a step with WithNetApiFlowTracking, on the endpoint or on a whole group. Without it the request is still listed, with zero steps.</p>
+    <p class="section-lead" style="margin-top: 24px;">MVC controllers and Minimal API endpoints become a step on their own, with nothing to mark. A request that matches no route is still listed, with zero steps. To draw the layers under the endpoint too, see <a href="https://github.com/Douglasproglima/netapiflow#marking-forms">Marking forms</a> in the README.</p>
+    <p class="section-lead" style="margin-top: 24px;">On .NET 8, the dotnet new webapi template has no AddOpenApi and no MapOpenApi. It uses Swashbuckle, so pasting those two lines gives CS1061. Keep what the template generated, leave the two lines out, and point the Runner at the document Swashbuckle serves:</p>
+    <div class="card codeblock" style="margin-top: 24px;">
+      <div class="filename"><span>Program.cs</span><span>.NET 8</span></div>
+      <pre id="quick-start-net8">builder.Services.<span class="c-fn">AddNetApiFlow</span>(options =&gt; options.OpenApiDocumentPath = "/swagger/v1/swagger.json");</pre>
+    </div>
+    <p class="section-lead" style="margin-top: 24px;">Without that path the Runner says it could not load the OpenAPI document and lists no endpoint. Nothing else changes.</p>
 
     <h2 class="h2" style="margin-top: 56px;">Every step, color plus icon plus text</h2>
     <p class="section-lead">State is never color alone. It stays readable in grayscale, for color blind users, and on a black and white printout.</p>

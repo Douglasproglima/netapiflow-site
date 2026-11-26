@@ -63,7 +63,7 @@
       <div class="principle">
         <p class="num">01</p>
         <h3>Tipagem forte (.NET)</h3>
-        <p>Integração nativa com DI e middleware do ASP.NET Core, com eventos de rastreamento tipados. Marcar uma etapa com NetApiFlow.Step ou num endpoint não usa reflexão. O proxy opcional AddFlowTracked usa.</p>
+        <p>Integração nativa com DI e middleware do ASP.NET Core, com eventos de rastreamento tipados. Marcar uma etapa com Flow.Step não usa reflexão. O proxy opcional do AddFlowTracked, do DecorateFlowTracked e do TrackFlowByConvention usa.</p>
       </div>
       <div class="principle">
         <p class="num">02</p>
@@ -78,7 +78,7 @@
       <div class="principle">
         <p class="num">04</p>
         <h3>Overhead medido</h3>
-        <p>Coleta assíncrona e desligável por ambiente. Medido na 0.1.0 com BenchmarkDotNet em uma máquina: cerca de 20 microssegundos por requisição sem nenhuma etapa marcada, e cerca de 32 com quatro etapas aninhadas. O <a href="https://github.com/Douglasproglima/netapiflow/blob/main/README.pt-BR.md#desempenho-e-overhead">benchmark publicado</a>, não estimado.</p>
+        <p>Coleta assíncrona e desligável por ambiente. Medido na 0.6.0 com BenchmarkDotNet, no .NET 8 e no .NET 10, num notebook que também rodava outros programas, então leia como ordem de grandeza. O rastreamento soma cerca de 13 a 14 microssegundos a uma requisição sem nenhuma etapa marcada, e cerca de 16 a 23 com quatro etapas aninhadas. Com Enabled = false soma de 0,4 a 1,7. O <a href="https://github.com/Douglasproglima/netapiflow/blob/main/README.pt-BR.md#desempenho-e-overhead">benchmark publicado</a>, não estimado.</p>
       </div>
     </div>
   </div>
@@ -150,26 +150,42 @@
     <h2 class="h2">Instale dois pacotes, adicione poucas linhas</h2>
     <p class="section-lead">Nenhum serviço separado para fazer deploy. O dashboard vem embutido no pacote NetApiFlow.Dashboard e roda junto da sua API.</p>
     <div class="card codeblock" style="margin-top: 32px;">
-      <div class="filename"><span>Program.cs</span><span>exemplo ilustrativo</span></div>
-      <pre><span class="c-cmt">// 1. instale os pacotes</span>
-<span class="c-kw">dotnet</span> add package NetApiFlow
-<span class="c-kw">dotnet</span> add package NetApiFlow.Dashboard
-
-<span class="c-cmt">// 2. registre e monte o dashboard</span>
-<span class="c-kw">using</span> NetApiFlow;
+      <div class="filename"><span>Terminal</span><span>num projeto criado com dotnet new webapi</span></div>
+      <pre id="quick-start-packages"><span class="c-kw">dotnet</span> add package NetApiFlow
+<span class="c-kw">dotnet</span> add package NetApiFlow.Dashboard</pre>
+    </div>
+    <p class="section-lead" style="margin-top: 24px;">Atualize os pacotes NetApiFlow juntos. Cada pacote pede o núcleo exatamente na sua própria versão. Se não combinarem, o NuGet avisa na hora do restore: NU1605 (um erro) quando o núcleo é mais velho do que o pacote precisa, NU1608 (um aviso) quando é mais novo.</p>
+    <p class="section-lead" style="margin-top: 24px;">Depois coloque isto no Program.cs. No .NET 10, AddOpenApi e MapOpenApi são do próprio modelo, então mantenha as duas: o Runner lista os seus endpoints a partir do documento OpenAPI da sua aplicação. A linha /hello representa os seus próprios endpoints.</p>
+    <div class="card codeblock" style="margin-top: 24px;">
+      <div class="filename"><span>Program.cs</span><span>.NET 10</span></div>
+      <pre id="quick-start-program"><span class="c-kw">using</span> NetApiFlow;
 <span class="c-kw">using</span> NetApiFlow.Dashboard;
 <span class="c-kw">using</span> NetApiFlow.Dashboard.Endpoints;
 
+<span class="c-kw">var</span> builder = WebApplication.<span class="c-fn">CreateBuilder</span>(args);
+builder.Services.<span class="c-fn">AddOpenApi</span>();
 builder.Services.<span class="c-fn">AddNetApiFlow</span>();
 builder.Services.<span class="c-fn">AddNetApiFlowDashboard</span>();
-<span class="c-cmt">// ...</span>
-app.<span class="c-fn">UseNetApiFlowDashboard</span>(); <span class="c-cmt">// montado em /flow por padrão</span>
 
-<span class="c-cmt">// 3. marque um endpoint como etapa (controllers MVC não precisam de nada)</span>
-app.<span class="c-fn">MapGet</span>("/hello", () =&gt; "Hello")
-    .<span class="c-fn">WithNetApiFlowTracking</span>();</pre>
+<span class="c-kw">var</span> app = builder.<span class="c-fn">Build</span>();
+<span class="c-kw">if</span> (app.Environment.<span class="c-fn">IsDevelopment</span>())
+{
+    app.<span class="c-fn">MapOpenApi</span>();
+}
+
+app.<span class="c-fn">MapNetApiFlowDashboard</span>(); <span class="c-cmt">// montado em /flow por padrão</span>
+
+app.<span class="c-fn">MapGet</span>("/hello", () =&gt; "Hello");
+
+app.<span class="c-fn">Run</span>();</pre>
     </div>
-    <p class="section-lead" style="margin-top: 24px;">Um endpoint de Minimal API só vira etapa com WithNetApiFlowTracking, no endpoint ou num grupo inteiro. Sem a chamada, a requisição aparece na lista, com zero etapas.</p>
+    <p class="section-lead" style="margin-top: 24px;">Controllers MVC e endpoints de Minimal API viram uma etapa sozinhos, sem nada para marcar. Uma requisição que não casa com nenhuma rota continua listada, com zero etapas. Para desenhar também as camadas abaixo do endpoint, veja <a href="https://github.com/Douglasproglima/netapiflow/blob/main/README.pt-BR.md#formas-de-marcar-etapas">Formas de marcar etapas</a> no README.</p>
+    <p class="section-lead" style="margin-top: 24px;">No .NET 8, o modelo dotnet new webapi não tem AddOpenApi nem MapOpenApi. Ele usa o Swashbuckle, então colar essas duas linhas dá CS1061. Mantenha o que o modelo gerou, deixe as duas linhas de fora e aponte o Runner para o documento que o Swashbuckle serve:</p>
+    <div class="card codeblock" style="margin-top: 24px;">
+      <div class="filename"><span>Program.cs</span><span>.NET 8</span></div>
+      <pre id="quick-start-net8">builder.Services.<span class="c-fn">AddNetApiFlow</span>(options =&gt; options.OpenApiDocumentPath = "/swagger/v1/swagger.json");</pre>
+    </div>
+    <p class="section-lead" style="margin-top: 24px;">Sem esse caminho, o Runner diz que não conseguiu carregar o documento OpenAPI e não lista nenhum endpoint. Nada mais muda.</p>
 
     <h2 class="h2" style="margin-top: 56px;">Toda etapa, cor, ícone e texto</h2>
     <p class="section-lead">Estado nunca é só cor. Continua legível em escala de cinza, para quem tem daltonismo, e numa impressão em preto e branco.</p>
